@@ -16,10 +16,20 @@ void NPC::init()
 
 void NPC::update()
 {
-	
+	checkBoundary();
+	sprite.move(3, 0);
 }
 
 void NPC::render(sf::RenderWindow& win)
 {
 	win.draw(sprite);
 }
+
+void NPC::checkBoundary()
+{
+	if (sprite.getPosition().x - texture.getSize().x >= xBoundary)
+	{
+		sprite.setPosition(0, sprite.getPosition().y);
+	}
+}
+

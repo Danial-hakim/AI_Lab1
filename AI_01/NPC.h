@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <ScreenSize.h>
 
 class NPC
 {
@@ -9,6 +10,8 @@ public:
 	void update();
 	void render(sf::RenderWindow& win);
 
+	void checkBoundary();
+
 private:
 
 	int speed = 5;
@@ -16,4 +19,6 @@ private:
 	sf::Sprite sprite;
 	sf::Texture texture;
 
+	int xBoundary = ScreenSize::s_width;
+	int yBoundary = ScreenSize::s_height;
 };

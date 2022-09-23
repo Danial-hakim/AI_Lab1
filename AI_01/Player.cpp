@@ -16,7 +16,7 @@ void Player::init()
 
 void Player::update()
 {
-	sprite.move(direction * speed);
+	sprite.move(direction);
 }
 
 void Player::render(sf::RenderWindow& win)
@@ -24,18 +24,20 @@ void Player::render(sf::RenderWindow& win)
 	win.draw(sprite);
 }
 
-void Player::checkDirection()
+void Player::updateDirection()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		direction = sf::Vector2f(-1,0);
-		sprite.setScale(1, -1);
+		direction = sf::Vector2f(cos(sprite.getRotation() * 180 / 3.14159265 + 180) * speed, sin(sprite.getRotation() * 180 / 3.14159265 + 180) * -speed);
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		direction = sf::Vector2f(1,0);
-		sprite.setScale(1, 1);
+		direction = sf::Vector2f(cos(sprite.getRotation() * 180 / 3.14159265 + 180) * -speed, sin(sprite.getRotation() * 180 / 3.14159265 + 180) * speed);
 	}
+
+	sprite.setRotation(sprite.getRotation() + 1);
+
+	//direction = 0;
 }
 
 void Player::updateVelocity()
@@ -64,5 +66,5 @@ void Player::updateVelocity()
 void Player::processGamesEvent()
 {
 	updateVelocity();
-	checkDirection();
+	updateDirection();
 }

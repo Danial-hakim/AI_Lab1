@@ -80,6 +80,7 @@ void Game::processGameEvents(sf::Event& event)
 void Game::update(double dt)
 {
 	player.update();
+	npc.update();
 }
 
 ////////////////////////////////////////////////////////////
