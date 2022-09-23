@@ -11,12 +11,22 @@ void Player::init()
 	sprite.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
 	sprite.setRotation(90);
 
-	sprite.setPosition(100, 100);
+	currentPosition = sf::Vector2f(500, 500);
+
+	sprite.setPosition(currentPosition);
 }
 
 void Player::update()
 {
-	sprite.move(direction);
+	boundaryChecker.checkBoundary(sprite);
+
+	currentPosition.x = currentPosition.x + cos(rotation * 3.1428 / 180) * speed ;
+	currentPosition.y = currentPosition.y + sin(rotation * 3.1428 / 180) * speed ;
+
+	previousPosition = currentPosition;
+
+	sprite.setPosition(currentPosition);
+	sprite.setRotation(rotation);
 }
 
 void Player::render(sf::RenderWindow& win)
@@ -26,17 +36,14 @@ void Player::render(sf::RenderWindow& win)
 
 void Player::updateDirection()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		direction = sf::Vector2f(cos(sprite.getRotation() * 180 / 3.14159265 + 180) * speed, sin(sprite.getRotation() * 180 / 3.14159265 + 180) * -speed);
+		increaseRotation();
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		direction = sf::Vector2f(cos(sprite.getRotation() * 180 / 3.14159265 + 180) * -speed, sin(sprite.getRotation() * 180 / 3.14159265 + 180) * speed);
+		decreaseRotation();
 	}
-
-	sprite.setRotation(sprite.getRotation() + 1);
-
 	//direction = 0;
 }
 
@@ -44,23 +51,12 @@ void Player::updateVelocity()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		speed += 0.5f;
+		increaseSpeed();
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		speed -= 0.5f;
+		decreaseSpeed();
 	}
-
-	if (speed >= 10)
-	{
-		speed = 10;
-	}
-	else if (speed <= 1)
-	{
-		speed = 1;
-	}
-
-	std::cout << speed << std::endl;
 }
 
 void Player::processGamesEvent()
@@ -68,3 +64,49 @@ void Player::processGamesEvent()
 	updateVelocity();
 	updateDirection();
 }
+
+void Player::increaseSpeed()
+{
+	previousSpeed = speed;
+	if (speed < MAX_SPEED)
+	{
+		speed += 1;
+	}
+}
+
+void Player::decreaseSpeed()
+{
+	previousSpeed = speed;
+	if (speed > 0)
+	{
+		speed -= 1;
+	}
+
+	if (speed <= 0)
+	{
+		speed = 0;
+	}
+}
+
+void Player::increaseRotation()
+{
+	previousRotation = rotation;
+	rotation += 2;
+	if (rotation == 360.0)
+	{
+		rotation = 0;
+	}
+
+	std::cout << "click" << std::endl;
+}
+
+void Player::decreaseRotation()
+{
+	previousRotation = rotation;
+	rotation -= 2;
+	if (rotation == 0.0)
+	{
+		rotation = 359.0;
+	}
+}
+
