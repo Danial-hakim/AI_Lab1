@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "BoundaryChecker.h"
+#include "ScreenSize.h"
 
 class Player
 {
@@ -19,6 +19,8 @@ public:
 	void increaseRotation();
 	void decreaseRotation();
 
+	void checkBoundary();
+
 private:
 
 	float speed = 1;
@@ -29,7 +31,7 @@ private:
 
 	float rotation = 0;
 
-	const float MAX_SPEED{ 10.0f };
+	const float MAX_SPEED{ 5.0f };
 
 	float previousSpeed;
 
@@ -38,6 +40,4 @@ private:
 	sf::Vector2f currentPosition;
 
 	sf::Vector2f previousPosition;
-
-	BoundaryChecker boundaryChecker;
 };

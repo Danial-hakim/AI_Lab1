@@ -18,8 +18,6 @@ void Player::init()
 
 void Player::update()
 {
-	boundaryChecker.checkBoundary(sprite);
-
 	currentPosition.x = currentPosition.x + cos(rotation * 3.1428 / 180) * speed ;
 	currentPosition.y = currentPosition.y + sin(rotation * 3.1428 / 180) * speed ;
 
@@ -27,6 +25,8 @@ void Player::update()
 
 	sprite.setPosition(currentPosition);
 	sprite.setRotation(rotation);
+
+	checkBoundary();
 }
 
 void Player::render(sf::RenderWindow& win)
@@ -44,7 +44,6 @@ void Player::updateDirection()
 	{
 		decreaseRotation();
 	}
-	//direction = 0;
 }
 
 void Player::updateVelocity()
@@ -79,34 +78,53 @@ void Player::decreaseSpeed()
 	previousSpeed = speed;
 	if (speed > 0)
 	{
-		speed -= 1;
+		speed -= 0.5f;
 	}
 
 	if (speed <= 0)
 	{
-		speed = 0;
+		speed = 0  ;
 	}
 }
 
 void Player::increaseRotation()
 {
 	previousRotation = rotation;
-	rotation += 2;
+	rotation += 5;
 	if (rotation == 360.0)
 	{
 		rotation = 0;
 	}
-
-	std::cout << "click" << std::endl;
 }
 
 void Player::decreaseRotation()
 {
 	previousRotation = rotation;
-	rotation -= 2;
+	rotation -= 5;
 	if (rotation == 0.0)
 	{
 		rotation = 359.0;
+	}
+}
+
+void Player::checkBoundary()
+{
+	if (currentPosition.x >= ScreenSize::s_width)
+	{
+		currentPosition.x = 0;
+	}
+	else if (currentPosition.x <= 0)
+	{
+		currentPosition.x = ScreenSize::s_width;
+	}
+
+	if (currentPosition.y >= ScreenSize::s_height)
+	{
+		currentPosition.y = 0;
+	}
+	else if (currentPosition.y <= 0)
+	{
+		currentPosition.y = ScreenSize::s_height;
 	}
 }
 
