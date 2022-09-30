@@ -21,6 +21,8 @@ public:
 
 	void checkBoundary();
 
+	sf::Vector2f getPos();
+
 private:
 
 	float speed = 1;

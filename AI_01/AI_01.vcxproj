@@ -20,15 +20,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Maths.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Seek.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Maths.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ScreenSize.h" />
+    <ClInclude Include="Seek.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{376f5dda-28b7-407f-9c15-89b045ee1bbf}</ProjectGuid>

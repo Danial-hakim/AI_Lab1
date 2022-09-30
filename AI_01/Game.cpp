@@ -11,7 +11,9 @@ Game::Game()
 	m_window.setVerticalSyncEnabled(true);
 
 	player.init();
-	npc.init();
+	//npc.init(player.getPos());
+
+	seek.init();
 }
 
 ////////////////////////////////////////////////////////////
@@ -77,10 +79,12 @@ void Game::processGameEvents(sf::Event& event)
 }
 
 ////////////////////////////////////////////////////////////
-void Game::update(double dt)
+void Game::update(float dt)
 {
 	player.update();
-	npc.update();
+	//npc.update();
+
+	seek.update(dt, player.getPos());
 }
 
 ////////////////////////////////////////////////////////////
@@ -88,7 +92,9 @@ void Game::render()
 {
 	m_window.clear(sf::Color(0, 0, 0, 0));
 	player.render(m_window);
-	npc.render(m_window);
+
+	seek.render(m_window);
+	//npc.render(m_window);
 	m_window.display();
 }
 

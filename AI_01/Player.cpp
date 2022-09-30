@@ -128,3 +128,8 @@ void Player::checkBoundary()
 	}
 }
 
+sf::Vector2f Player::getPos()
+{
+	return sprite.getPosition();
+}
+

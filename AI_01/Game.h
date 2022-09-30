@@ -4,6 +4,8 @@
 #include "ScreenSize.h"
 #include "Player.h"
 #include "NPC.h"
+#include "Seek.h"
+
 /// <summary>
 /// @author RP
 /// @date September 2020
@@ -46,7 +48,7 @@ protected:
 	/// @brief Placeholder to perform updates to all game objects.
 	/// </summary>
 	/// <param name="time">update delta time</param>
-	void update(double dt);
+	void update(float dt);
 
 	/// <summary>
 	/// @brief Draws the background and foreground game objects in the SFML window.
@@ -71,5 +73,7 @@ protected:
 	sf::RenderWindow m_window;
 
 	Player player;
-	NPC npc;
+	//NPC npc;
+
+	Seek seek;
 };
