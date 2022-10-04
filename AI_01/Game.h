@@ -4,7 +4,6 @@
 #include "ScreenSize.h"
 #include "Player.h"
 #include "NPC.h"
-#include "Seek.h"
 
 /// <summary>
 /// @author RP
@@ -75,5 +74,6 @@ protected:
 	Player player;
 	//NPC npc;
 
-	Seek seek;
+	NPC npc_1;
+	NPC npc_2;
 };

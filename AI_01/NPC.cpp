@@ -2,28 +2,27 @@
 
 void NPC::init()
 {
-	if (!texture.loadFromFile("./sprites/playerShip2_blue.png"))
+	if (!texture.loadFromFile("./sprites/playerShip1_green.png"))
 	{
 		std::cout << "Error with npc sprite" << std::endl;
 	}
 
 	sprite.setTexture(texture);
 	sprite.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
-	sprite.setRotation(90);
+	//sprite.setRotation(90);
 
 	sprite.setPosition(500, 500);
 
 	//m_playerPos = playerPos;
 }
 
-void NPC::update(float dt, sf::Vector2f playerPos)
+void NPC::update(float dt, sf::Vector2f playerPos, int enemyType)
 {
 	m_playerPos = playerPos;
 
 	checkBoundary();
-	getSteering();
+	getSteering(enemyType);
 	kinematicsUpdate(dt);
-	//sprite.move(1, 0);
 
 	updateMovement();
 
@@ -64,16 +63,15 @@ void NPC::checkBoundary()
 void NPC::kinematicsUpdate(float dt)
 {
 	//Update the positionand orientation
-
-	kinematics.position = currentPosition;
+	kinematics.position = sprite.getPosition();
 	kinematics.orientation = sprite.getRotation();
 
-	kinematics.position += kinematics.velocity * dt;
-	kinematics.orientation += kinematics.rotation * dt;
+	kinematics.position += kinematics.velocity * (dt / 1000.0f);
+	kinematics.orientation += kinematics.rotation * (dt / 1000.0f);
 
 	//Update the velocity and rotation
-	kinematics.velocity += steering.linear * dt;
-	kinematics.orientation += steering.angular * dt;
+	kinematics.velocity += steering.linear * (dt / 1000.0f);
+	kinematics.orientation += steering.angular * (dt / 1000.0f);
 
 	if (Maths::length(kinematics.velocity) > maxSpeed)
 	{
@@ -82,14 +80,36 @@ void NPC::kinematicsUpdate(float dt)
 	}
 }
 
-SteeringOutput NPC::getSteering()
+void NPC::getSteering(int enemyType)
 {
-	return SteeringOutput();
+	switch (enemyType)
+	{
+	case 1:
+		steering.linear = m_playerPos - currentPosition;
+
+		Maths::unitVector(steering.linear);
+		steering.linear *= maxAcceleration;
+
+		steering.angular = 0;
+		break;
+
+	case 2:
+
+		steering.linear = currentPosition - m_playerPos;
+
+		Maths::unitVector(steering.linear);
+		steering.linear *= maxAcceleration;
+
+		steering.angular = 0;
+		break;
+	}
 }
 
 void NPC::updateMovement()
 {
 	sprite.setPosition(kinematics.position);
 	sprite.setRotation(kinematics.rotation);
+
+	std::cout << kinematics.position.x << std::endl;
 }
 

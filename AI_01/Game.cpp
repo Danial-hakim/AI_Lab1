@@ -13,7 +13,8 @@ Game::Game()
 	player.init();
 	//npc.init(player.getPos());
 
-	seek.init();
+	npc_1.init();
+	npc_2.init();
 }
 
 ////////////////////////////////////////////////////////////
@@ -82,9 +83,9 @@ void Game::processGameEvents(sf::Event& event)
 void Game::update(float dt)
 {
 	player.update();
-	//npc.update();
 
-	seek.update(dt, player.getPos());
+	npc_1.update(dt, player.getPos(), 1);
+	npc_2.update(dt, player.getPos(), 2);
 }
 
 ////////////////////////////////////////////////////////////
@@ -93,8 +94,8 @@ void Game::render()
 	m_window.clear(sf::Color(0, 0, 0, 0));
 	player.render(m_window);
 
-	seek.render(m_window);
-	//npc.render(m_window);
+	//npc_1.render(m_window);
+	npc_2.render(m_window);
 	m_window.display();
 }
 

@@ -23,20 +23,18 @@ class NPC
 public:
 
 	void init();
-	void update(float dt,sf::Vector2f playerPos);
+	void update(float dt,sf::Vector2f playerPos, int enemyType);
 	void render(sf::RenderWindow& win);
 
 	void checkBoundary();
 
 	void kinematicsUpdate(float dt);
 
-	virtual SteeringOutput getSteering();
+	void getSteering(int enemyType);
 
 	void updateMovement();
 
 protected:
-
-	int speed = 5;
 
 	sf::Sprite sprite;
 	sf::Texture texture;
@@ -48,12 +46,10 @@ protected:
 
 	sf::Vector2f currentPosition;
 
-	int timer = 120;
-	int randomX = 3;
-	int randomY = 0;
-
-	float maxSpeed = 5;
+	float maxSpeed = 0.95f;
 
 	Kinematics kinematics;
 	SteeringOutput steering;
+
+	float maxAcceleration = 0.5f;
 };
