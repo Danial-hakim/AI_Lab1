@@ -43,3 +43,10 @@ float Maths::distance(sf::Vector2f vector_1, sf::Vector2f vector_2)
 {
 	return std::sqrtf((vector_1.x - vector_2.x) * (vector_1.x - vector_2.x) + (vector_1.y - vector_2.y) * (vector_1.y - vector_2.y));
 }
+
+float Maths::radiansToDegree(float radians)
+{
+	const float PI = 3.14f;
+
+	return radians * 180 / PI;
+}

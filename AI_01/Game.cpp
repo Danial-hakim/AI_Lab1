@@ -11,7 +11,6 @@ Game::Game()
 	m_window.setVerticalSyncEnabled(true);
 
 	player.init();
-	//npc.init(player.getPos());
 
 	npc_1.init();
 	npc_2.init();
@@ -94,7 +93,7 @@ void Game::render()
 	m_window.clear(sf::Color(0, 0, 0, 0));
 	player.render(m_window);
 
-	//npc_1.render(m_window);
+	npc_1.render(m_window);
 	npc_2.render(m_window);
 	m_window.display();
 }

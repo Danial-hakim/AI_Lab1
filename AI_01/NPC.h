@@ -34,6 +34,10 @@ public:
 
 	void updateMovement();
 
+	void updateOrientation(float currentOrientation, sf::Vector2f velocity);
+
+	void resetToMiddle();
+
 protected:
 
 	sf::Sprite sprite;
@@ -46,7 +50,9 @@ protected:
 
 	sf::Vector2f currentPosition;
 
-	float maxSpeed = 0.95f;
+	float rotation;
+
+	float maxSpeed = 0.99f;
 
 	Kinematics kinematics;
 	SteeringOutput steering;

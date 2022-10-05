@@ -20,7 +20,15 @@ void NPC::update(float dt, sf::Vector2f playerPos, int enemyType)
 {
 	m_playerPos = playerPos;
 
-	checkBoundary();
+	if (enemyType != 2)
+	{
+		checkBoundary();
+	}
+	else
+	{
+		resetToMiddle();
+	}
+
 	getSteering(enemyType);
 	kinematicsUpdate(dt);
 
@@ -90,6 +98,8 @@ void NPC::getSteering(int enemyType)
 		Maths::unitVector(steering.linear);
 		steering.linear *= maxAcceleration;
 
+		updateOrientation(rotation, steering.linear);
+
 		steering.angular = 0;
 		break;
 
@@ -98,7 +108,9 @@ void NPC::getSteering(int enemyType)
 		steering.linear = currentPosition - m_playerPos;
 
 		Maths::unitVector(steering.linear);
-		steering.linear *= maxAcceleration;
+		steering.linear *= (maxAcceleration / 2);
+
+		updateOrientation(rotation, steering.linear);
 
 		steering.angular = 0;
 		break;
@@ -108,8 +120,37 @@ void NPC::getSteering(int enemyType)
 void NPC::updateMovement()
 {
 	sprite.setPosition(kinematics.position);
-	sprite.setRotation(kinematics.rotation);
+	sprite.setRotation(rotation);
 
-	std::cout << kinematics.position.x << std::endl;
+	//std::cout << rotation << std::endl;
+}
+
+void NPC::updateOrientation(float currentOrientation, sf::Vector2f velocity)
+{
+	if (Maths::length(velocity) > 0)
+	{
+		rotation = Maths::radiansToDegree(std::atan2f(velocity.y, velocity.x));
+	}
+	else
+	{
+		rotation = currentOrientation;
+	}
+}
+
+void NPC::resetToMiddle()
+{
+	currentPosition = sprite.getPosition();
+
+	if (currentPosition.x >= ScreenSize::s_width || currentPosition.x <= 0)
+	{
+		currentPosition.x = ScreenSize::s_width / 2.0f;
+	}
+
+	if (currentPosition.y >= ScreenSize::s_height || currentPosition.y <= 0)
+	{
+		currentPosition.y = ScreenSize::s_height / 2.0f;
+	}
+
+	sprite.setPosition(currentPosition);
 }
 
