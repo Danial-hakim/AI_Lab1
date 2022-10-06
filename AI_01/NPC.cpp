@@ -22,11 +22,11 @@ void NPC::update(float dt, sf::Vector2f playerPos, int enemyType)
 
 	if (enemyType != 2)
 	{
-		checkBoundary();
+checkBoundary();
 	}
 	else
 	{
-		resetToMiddle();
+	resetToMiddle();
 	}
 
 	getSteering(enemyType);
@@ -92,7 +92,7 @@ void NPC::getSteering(int enemyType)
 {
 	switch (enemyType)
 	{
-	case 1:
+	case 1: // seek
 		steering.linear = m_playerPos - currentPosition;
 
 		Maths::unitVector(steering.linear);
@@ -103,7 +103,7 @@ void NPC::getSteering(int enemyType)
 		steering.angular = 0;
 		break;
 
-	case 2:
+	case 2: // flee
 
 		steering.linear = currentPosition - m_playerPos;
 
@@ -114,6 +114,22 @@ void NPC::getSteering(int enemyType)
 
 		steering.angular = 0;
 		break;
+
+	case 3: // Arrive
+
+		float rad = 5.0f;
+
+		steering.linear = m_playerPos - currentPosition;
+
+		if (Maths::length(steering.linear) > rad)
+		{
+			steering.linear /= 0.25f;
+		};
+
+		//if(steering.linear)
+
+
+
 	}
 }
 
@@ -121,8 +137,6 @@ void NPC::updateMovement()
 {
 	sprite.setPosition(kinematics.position);
 	sprite.setRotation(rotation);
-
-	//std::cout << rotation << std::endl;
 }
 
 void NPC::updateOrientation(float currentOrientation, sf::Vector2f velocity)
