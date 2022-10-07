@@ -22,11 +22,11 @@ void NPC::update(float dt, sf::Vector2f playerPos, int enemyType)
 
 	if (enemyType != 2)
 	{
-checkBoundary();
+		checkBoundary();
 	}
 	else
 	{
-	resetToMiddle();
+		resetToMiddle();
 	}
 
 	getSteering(enemyType);
@@ -83,7 +83,7 @@ void NPC::kinematicsUpdate(float dt)
 
 	if (Maths::length(kinematics.velocity) > maxSpeed)
 	{
-		Maths::unitVector(kinematics.velocity);
+		kinematics.velocity = Maths::unitVector(kinematics.velocity);
 		kinematics.velocity *= maxSpeed;
 	}
 }
@@ -95,10 +95,10 @@ void NPC::getSteering(int enemyType)
 	case 1: // seek
 		steering.linear = m_playerPos - currentPosition;
 
-		Maths::unitVector(steering.linear);
+		steering.linear = Maths::unitVector(steering.linear);
 		steering.linear *= maxAcceleration;
 
-		updateOrientation(rotation, steering.linear);
+		updateOrientation();
 
 		steering.angular = 0;
 		break;
@@ -108,28 +108,62 @@ void NPC::getSteering(int enemyType)
 		steering.linear = currentPosition - m_playerPos;
 
 		Maths::unitVector(steering.linear);
-		steering.linear *= (maxAcceleration / 2);
+		steering.linear *= maxAcceleration;
 
-		updateOrientation(rotation, steering.linear);
+		updateOrientation();
 
 		steering.angular = 0;
 		break;
 
 	case 3: // Arrive
 
-		float rad = 5.0f;
+		sf::Vector2f direction = m_playerPos - currentPosition;
 
-		steering.linear = m_playerPos - currentPosition;
+		float distance = Maths::length(direction);
 
-		if (Maths::length(steering.linear) > rad)
+		if (distance < reachRad)
 		{
-			steering.linear /= 0.25f;
-		};
+			kinematics.velocity = sf::Vector2f();
+			std::cout << "in" << std::endl;
+			return;
+		}
 
-		//if(steering.linear)
+		if (distance > slowRad)
+		{
+			targetSpeed = maxSpeed;
+			std::cout << "out" << std::endl;
+		}
+		else
+		{
+			targetSpeed = maxSpeed * distance / slowRad;
+			std::cout << "close" << std::endl;
+		}
 
+		sf::Vector2f targetVelocity = direction;
 
+		targetVelocity = Maths::unitVector(targetVelocity);
+		
+		targetVelocity *= targetSpeed;
 
+		sf::Vector2f result = targetVelocity - kinematics.velocity;
+
+		result /= 0.1f;
+
+		if (Maths::length(result) > maxAcceleration)
+		{
+			result = Maths::unitVector(result);
+
+			result *= maxAcceleration;
+		}
+
+		steering.linear = result;
+
+		if (Maths::length(steering.linear) != 0)
+		{
+			updateOrientation();
+		}
+
+		steering.angular = 0;
 	}
 }
 
@@ -139,15 +173,11 @@ void NPC::updateMovement()
 	sprite.setRotation(rotation);
 }
 
-void NPC::updateOrientation(float currentOrientation, sf::Vector2f velocity)
+void NPC::updateOrientation()
 {
-	if (Maths::length(velocity) > 0)
+	if (Maths::length(kinematics.velocity) > 0)
 	{
-		rotation = Maths::radiansToDegree(std::atan2f(velocity.y, velocity.x));
-	}
-	else
-	{
-		rotation = currentOrientation;
+		rotation = Maths::radiansToDegree(std::atan2f(kinematics.velocity.y, kinematics.velocity.x));
 	}
 }
 

@@ -75,5 +75,6 @@ protected:
 	//NPC npc;
 
 	NPC npc_1;
-	NPC npc_2;
+	//NPC npc_2;
+	NPC npc_3;
 };

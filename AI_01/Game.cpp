@@ -13,14 +13,15 @@ Game::Game()
 	player.init();
 
 	npc_1.init();
-	npc_2.init();
+	//npc_2.init();
+	npc_3.init();
 }
 
 ////////////////////////////////////////////////////////////
 void Game::run()
 {
 	sf::Clock clock;
-	sf::Int32 lag = 0;
+	float lag = 0;
 
 	while (m_window.isOpen())
 	{
@@ -35,7 +36,7 @@ void Game::run()
 			update(lag);
 			lag -= MS_PER_UPDATE;
 		}
-		update(lag);
+		//update(lag);
 
 		render();
 	}
@@ -84,7 +85,8 @@ void Game::update(float dt)
 	player.update();
 
 	npc_1.update(dt, player.getPos(), 1);
-	npc_2.update(dt, player.getPos(), 2);
+	npc_3.update(dt, player.getPos(), 3);
+	//npc_2.update(dt, player.getPos(), 2);
 }
 
 ////////////////////////////////////////////////////////////
@@ -94,7 +96,8 @@ void Game::render()
 	player.render(m_window);
 
 	npc_1.render(m_window);
-	npc_2.render(m_window);
+	npc_3.render(m_window);
+	//npc_2.render(m_window);
 	m_window.display();
 }
 

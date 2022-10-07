@@ -23,7 +23,7 @@ class NPC
 public:
 
 	void init();
-	void update(float dt,sf::Vector2f playerPos, int enemyType);
+	void update(float dt, sf::Vector2f playerPos, int enemyType);
 	void render(sf::RenderWindow& win);
 
 	void checkBoundary();
@@ -34,7 +34,7 @@ public:
 
 	void updateMovement();
 
-	void updateOrientation(float currentOrientation, sf::Vector2f velocity);
+	void updateOrientation();
 
 	void resetToMiddle();
 
@@ -52,10 +52,15 @@ protected:
 
 	float rotation;
 
-	float maxSpeed = 0.99f;
+	float maxSpeed = 100.0f;
 
 	Kinematics kinematics;
 	SteeringOutput steering;
 
-	float maxAcceleration = 0.5f;
+	float maxAcceleration = 95.0f;
+
+	float reachRad = 10.0f;
+	float slowRad = 200.0f;
+
+	float targetSpeed;
 };
